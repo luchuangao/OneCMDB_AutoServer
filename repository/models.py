@@ -175,7 +175,7 @@ class Disk(models.Model):
     """
     slot = models.CharField('插槽位', max_length=8)
     model = models.CharField('磁盘型号', max_length=32)
-    capacity = models.FloatField('磁盘容量GB')
+    capacity = models.IntegerField('磁盘容量GB', max_length=32)
     pd_type = models.CharField('磁盘类型', max_length=32)
     server_obj = models.ForeignKey('Server',related_name='disk')
 
