@@ -1,9 +1,47 @@
 import json
+import time
+import hashlib
 from django.shortcuts import render,HttpResponse
 from repository import models
+from django.conf import settings
+
+
+api_key_record = {
+    # "1b96b89695f52ec9de8292a5a7945e38|1501472467.4977243":1501472477.4977243
+}
 
 def asset(request):
-    if request.method == 'POST':
+    client_md5_time_key = request.META.get('HTTP_OPENKEY')
+    client_md5_key, client_ctime = client_md5_time_key.split('|')
+    client_ctime = float(client_ctime)
+    server_time = time.time()
+
+    # 第一关
+    if server_time - client_ctime > 10:
+        return HttpResponse('【第一关】小伙子，别唬我，时间太长了')
+    # 第二关
+    temp = "%s|%s" %(settings.AUTH_KEY, client_ctime,)
+    m = hashlib.md5()
+    m.update(bytes(temp,encoding='utf-8'))
+    server_md5_key = m.hexdigest()
+    if server_md5_key != client_md5_key:
+        return HttpResponse('【第二关】小子，你是不是修改时间了')
+
+    for k in list(api_key_record.keys()):
+        v = api_key_record[k]
+        if server_time > v:
+            del api_key_record[k]
+
+    # 第三关:
+    if client_md5_time_key in api_key_record:
+        return HttpResponse('【第三关】有人已经来过了...')
+    else:
+        api_key_record[client_md5_time_key] = client_ctime + 10
+
+    if request.method == 'GET':
+        ys = '重要的不能被闲杂人等看的数据'
+        return HttpResponse(ys)
+    elif request.method == 'POST':
         # 新资产信息
         server_info = json.loads(request.body.decode("utf-8"))
         hostname = server_info['basic']['data']['hostname']
