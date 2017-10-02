@@ -10,6 +10,14 @@ api_key_record = {
     # "1b96b89695f52ec9de8292a5a7945e38|1501472467.4977243":1501472477.4977243
 }
 
+def decrypt(msg):
+    from Crypto.Cipher import AES
+    key = b'dfdsdfsasdfdsdfs'
+    cipher = AES.new(key, AES.MODE_CBC, key)
+    result = cipher.decrypt(msg) # result = b'\xe8\xa6\x81\xe5\x8a\xa0\xe5\xaf\x86\xe5\x8a\xa0\xe5\xaf\x86\xe5\x8a\xa0sdfsd\t\t\t\t\t\t\t\t\t'
+    data = result[0:-result[-1]]
+    return str(data,encoding='utf-8')
+
 def asset(request):
     client_md5_time_key = request.META.get('HTTP_OPENKEY')
     client_md5_key, client_ctime = client_md5_time_key.split('|')
@@ -42,6 +50,8 @@ def asset(request):
         ys = '重要的不能被闲杂人等看的数据'
         return HttpResponse(ys)
     elif request.method == 'POST':
+        server_info = decrypt(request.body)
+        server_info = json.loads(server_info)
         # 新资产信息
         server_info = json.loads(request.body.decode("utf-8"))
         hostname = server_info['basic']['data']['hostname']
@@ -50,8 +60,8 @@ def asset(request):
         if not server_obj:
             return HttpResponse('当前主机名在资产中未录入')
 
-        # for k,v in server_obj.items():
-        #     print(k,v)
+        for k,v in server_obj.items():
+            print(k,v)
 
         # ################ 处理硬盘信息 #################
         if not server_info['disk']['status']:
