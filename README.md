@@ -69,3 +69,9 @@ PS：隐患，容易被他人截获
 第三关：已访问记录 2s  
 第四关：对数据进行加密  
 
+#### 后台管理
+
+知识点：  
+1. 序列化：
+    * Django内置： from django.core import serializers  
+    * JSON + 扩展

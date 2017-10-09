@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css" >
+</head>
+<body>
+        <div style="width: 700px;margin: 0 auto">
+        <table class="table table-bordered table-striped">
+            <thead id="tbHead">
+                <tr>
+                </tr>
+            </thead>
+            <tbody id="tbBody">
+
+            </tbody>
+        </table>
+    </div>
+    <script src="/static/jquery-1.12.4.js"></script>
+    <script>
+        $(function(){
+            initail();
+        });
+        
+        function initail(){
+            $.ajax({
+                url: '/backend/curd_json.html',
+                type: 'GET',
+                dataType: 'JSON',
+                success: function(arg){
+                    /*
+                    {
+                        'server_list':list(server_list), # 所有数据
+                        'table_config':table_config      # 所有配置
+                    }
+                     */
+                    initTableHeader(arg.table_config);
+                    initTableBody(arg.server_list, arg.table_config);
+                }
+            })
+        }
+
+        function initTableHeader(tableConfig) {
+            /*
+            [
+                {'q':'id','title':'ID'},
+                {'q':'hostname','title':'主机名'},
+            ]
+             */
+            $.each(tableConfig, function (k,v) {
+                var tag = document.createElement('th');
+                tag.innerHTML = v.title;
+                $('#tbHead').find('tr').append(tag);
+            })
+        }
+
+        function initTableBody(serverList, tableConfig) {
+            /*
+            serverList = [
+                {'id': 1, 'hostname':c2.com, create_at: xxxx-xx-xx-},
+                {'id': 1, 'hostname':c2.com, create_at: xxxx-xx-xx-},
+                {'id': 1, 'hostname':c2.com, create_at: xxxx-xx-xx-},
+                {'id': 1, 'hostname':c2.com, create_at: xxxx-xx-xx-},
+            ]
+             */
+            $.each(serverList, function (k,row) {
+                // row: {'id': 1, 'hostname':c2.com, create_at: xxxx-xx-xx-}
+                /*
+                <tr>
+                    <td>id</td>
+                    <td>hostn</td>
+                    <td>create</td>
+                </tr>
+                */
+                var tr = document.createElement('tr')
+                $.each(tableConfig, function (kk,rrow) {
+                    // kk: 1  rrow:{'q':'id','title':'ID'},         // rrow.q = "id"
+                    // kk: .  rrow:{'q':'hostname','title':'主机名'},// rrow.q = "hostname"
+                    // kk: .  rrow:{'q':'create_at','title':'创建时间'}, // rrow.q = "create_at"
+                    var td = document.createElement('td');
+                    td.innerHTML = row[rrow.q];
+                    $(tr).append(td);
+                });
+                $('#tbBody').append(tr);
+            })
+        }
+
+    </script>
+</body>
+</html>
