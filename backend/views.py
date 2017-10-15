@@ -25,47 +25,26 @@ def curd_json(request):
         {
             'q':'id',
             'title':'ID',
+            'display': False,
             'text':{
-             'tpl':"{n1}",
-             'kwargs':{'n1':'@id'}
+                 'tpl':"{n1}",
+                 'kwargs':{'n1':'@id'}
             }
          },
         {
             'q':'hostname',
              'title':'主机名',
+             'display': True,
              'text':{
                  'tpl':"{n1}-{n2}",
                  'kwargs':{'n1':'@hostname','n2':'@id'}
              }
          },
-        {
-            'q':'create_at',
-            'title':'创建时间',
-            'text':{
-                'tpl':"{n1}",
-                'kwargs':{'n1':'@create_at'}
-            }
-        },
-        {
-            'q':'asset__cabinet_num',
-            'title':'机柜号',
-            'text':{
-                'tpl':"BJ-{n1}",
-                'kwargs':{'n1':'@asset__cabinet_num'}
-            }
-        },
-        {
-            'q':'asset__business_unit__name',
-            'title':'业务线名称',
-            'text':{
-                'tpl':"{n1}",
-                'kwargs':{'n1':'@asset__business_unit__name'}
-            }
-        },
         # 页面显示：标题：操作：删除，标记：a标签
         {
-            'q':None,
+            'q': None,
             'title': '操作',
+            'display': True,
             'text':{
                 'tpl':"<a href='/del?nid={nid}'>删除</a>",
                 'kwargs':{'nid':'@id'}

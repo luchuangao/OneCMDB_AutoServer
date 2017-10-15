@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css" >
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
 </head>
 <body>
-        <div style="width: 700px;margin: 0 auto">
+    <div style="width: 700px;margin: 0 auto">
+        <h1>服务器列表</h1>
         <table class="table table-bordered table-striped">
             <thead id="tbHead">
-                <tr>
-                </tr>
+            <tr>
+            </tr>
             </thead>
             <tbody id="tbBody">
 
@@ -18,98 +19,9 @@
         </table>
     </div>
     <script src="/static/jquery-1.12.4.js"></script>
+    <script src="/static/nb-list.js"></script>
     <script>
-        $(function(){
-            initail();
-        });
-        // 为字符串创建format方法，用于字符串格式化
-        String.prototype.format = function(args){
-            return this.replace(/\{(\w+)\}/g, function(s,i){
-                return args[i];
-            });
-        };
-        function initail(){
-            $.ajax({
-                url: '/backend/curd_json.html',
-                type: 'GET', //获取数据
-                dataType: 'JSON',
-                success: function(arg){
-                    /*
-                    {
-                        'server_list':list(server_list), # 所有数据
-                        'table_config':table_config      # 所有配置
-                    }
-                     */
-                    initTableHeader(arg.table_config);
-                    initTableBody(arg.server_list, arg.table_config);
-                }
-            })
-        }
-
-        function initTableHeader(tableConfig) {
-            /*
-            [
-                {'q':'id','title':'ID'},
-                {'q':'hostname','title':'主机名'},
-            ]
-             */
-            $.each(tableConfig, function (k,v) {
-                var tag = document.createElement('th');
-                tag.innerHTML = v.title;
-                $('#tbHead').find('tr').append(tag);
-            })
-        }
-
-        function initTableBody(serverList, tableConfig) {
-            /*
-            serverList = [
-                {'id': 1, 'hostname':c2.com, create_at: xxxx-xx-xx-},
-                {'id': 1, 'hostname':c2.com, create_at: xxxx-xx-xx-},
-                {'id': 1, 'hostname':c2.com, create_at: xxxx-xx-xx-},
-                {'id': 1, 'hostname':c2.com, create_at: xxxx-xx-xx-},
-            ]
-             */
-            $.each(serverList, function (k,row) {
-                // row: {'id': 1, 'hostname':c2.com, create_at: xxxx-xx-xx-}
-                /*
-                <tr>
-                    <td>id</td>
-                    <td>hostn</td>
-                    <td>create</td>
-                </tr>
-                */
-                var tr = document.createElement('tr')
-                $.each(tableConfig, function (kk,rrow) {
-                    // kk: 1  rrow:{'q':'id','title':'ID'},         // rrow.q = "id"
-                    // kk: .  rrow:{'q':'hostname','title':'主机名'},// rrow.q = "hostname"
-                    // kk: .  rrow:{'q':'create_at','title':'创建时间'}, // rrow.q = "create_at"
-                    var td = document.createElement('td');
-                    /*
-                    if(rrow['q']){
-                       td.innerHTML = row[rrow.q];
-                    }else{
-                        td.innerHTML = rrow.text;
-                    }*/
-                    // rrow['q']
-                    // rrow['text']
-                    // rrow.text.tpl = "asdf{n1}sdf"
-                    // rrow.text.kwargs = {'n1':'@id','n2':'123'}
-                    var newKwargs = {}; // {'n1':'1','n2':'123'}
-                    $.each(rrow.text.kwargs, function(kkk,vvv){
-                        var av = vvv;
-                        if(vvv[0] == '@'){
-                            av = row[vvv.substring(1,vvv.length)];
-                        }
-                        newKwargs[kkk] = av;
-                    });
-                    var newText = rrow.text.tpl.format(newKwargs);
-                    td.innerHTML = newText;
-                    $(tr).append(td);
-                });
-                $('#tbBody').append(tr);
-            })
-        }
-
+        $.xx('/backend/curd_json.html');
     </script>
 </body>
 </html>
