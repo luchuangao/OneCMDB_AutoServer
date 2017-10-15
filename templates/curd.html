@@ -22,11 +22,16 @@
         $(function(){
             initail();
         });
-        
+        // 为字符串创建format方法，用于字符串格式化
+        String.prototype.format = function(args){
+            return this.replace(/\{(\w+)\}/g, function(s,i){
+                return args[i];
+            });
+        };
         function initail(){
             $.ajax({
                 url: '/backend/curd_json.html',
-                type: 'GET',
+                type: 'GET', //获取数据
                 dataType: 'JSON',
                 success: function(arg){
                     /*
@@ -79,7 +84,26 @@
                     // kk: .  rrow:{'q':'hostname','title':'主机名'},// rrow.q = "hostname"
                     // kk: .  rrow:{'q':'create_at','title':'创建时间'}, // rrow.q = "create_at"
                     var td = document.createElement('td');
-                    td.innerHTML = row[rrow.q];
+                    /*
+                    if(rrow['q']){
+                       td.innerHTML = row[rrow.q];
+                    }else{
+                        td.innerHTML = rrow.text;
+                    }*/
+                    // rrow['q']
+                    // rrow['text']
+                    // rrow.text.tpl = "asdf{n1}sdf"
+                    // rrow.text.kwargs = {'n1':'@id','n2':'123'}
+                    var newKwargs = {}; // {'n1':'1','n2':'123'}
+                    $.each(rrow.text.kwargs, function(kkk,vvv){
+                        var av = vvv;
+                        if(vvv[0] == '@'){
+                            av = row[vvv.substring(1,vvv.length)];
+                        }
+                        newKwargs[kkk] = av;
+                    });
+                    var newText = rrow.text.tpl.format(newKwargs);
+                    td.innerHTML = newText;
                     $(tr).append(td);
                 });
                 $('#tbBody').append(tr);
