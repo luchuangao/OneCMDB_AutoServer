@@ -29,7 +29,8 @@ def curd_json(request):
             'text':{
                  'tpl':"{n1}",
                  'kwargs':{'n1':'@id'}
-            }
+            },
+            'attrs': {'k1': 'v1', 'k2': '@hostname'}
          },
         {
             'q':'hostname',
@@ -38,7 +39,8 @@ def curd_json(request):
              'text':{
                  'tpl':"{n1}-{n2}",
                  'kwargs':{'n1':'@hostname','n2':'@id'}
-             }
+             },
+            'attrs': {'k1': 'v1', 'k2': '@hostname'}
          },
         # 页面显示：标题：操作：删除，标记：a标签
         {
@@ -48,7 +50,8 @@ def curd_json(request):
             'text':{
                 'tpl':"<a href='/del?nid={nid}'>删除</a>",
                 'kwargs':{'nid':'@id'}
-            }
+            },
+            'attrs': {'k1': 'v1', 'k2': '@hostname'}
         },
     ]
     # 普通值：原值存放即可
@@ -83,7 +86,8 @@ def asset_json(request):
             'text': {
                 'tpl': "{n1}",
                 'kwargs': {'n1': '@id'}
-            }
+            },
+            'attrs': {'k1': 'v1', 'k2': '@id'}
         },
         {
             'q': 'device_type_id',
@@ -92,7 +96,8 @@ def asset_json(request):
             'text': {
                 'tpl': "{n1}",
                 'kwargs': {'n1': '@@device_type_choices'}
-            }
+            },
+            'attrs': {'k1': 'v1', 'k2': '@id'}
         },
         {
             'q': 'device_status_id',
@@ -101,7 +106,8 @@ def asset_json(request):
             'text': {
                 'tpl': "{n1}",
                 'kwargs': {'n1': '@@device_status_choices'}
-            }
+            },
+            'attrs': {'k1': 'v1', 'k2': '@id'}
         },
         {
             'q': 'cabinet_num',
@@ -110,7 +116,8 @@ def asset_json(request):
             'text': {
                 'tpl': "{n1}",
                 'kwargs': {'n1': '@cabinet_num'}
-            }
+            },
+            'attrs': {'k1': 'v1', 'k2': '@id'}
         },
         {
             'q': 'idc__name',
@@ -119,7 +126,8 @@ def asset_json(request):
             'text': {
                 'tpl': "{n1}",
                 'kwargs': {'n1': '@idc__name'}
-            }
+            },
+            'attrs': {'k1': 'v1', 'k2': '@id'}
         },
         # 页面显示：标题：操作；删除，编辑：a标签
         {
@@ -129,7 +137,8 @@ def asset_json(request):
             'text': {
                 'tpl': "<a href='/del?nid={nid}'>删除</a>",
                 'kwargs': {'nid': '@id'}
-            }
+            },
+            'attrs': {'k1': 'v1', 'k2': '@id'}
         },
     ]
     # 普通值：原值存放即可

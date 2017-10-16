@@ -75,3 +75,5 @@ PS：隐患，容易被他人截获
 1. 序列化：
     * Django内置： from django.core import serializers  
     * JSON + 扩展
+
+

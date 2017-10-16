@@ -103,16 +103,7 @@
                 // kk: .  rrow:{'q':'create_at','title':'创建时间'}, // rrow.q = "create_at"
                 if (rrow.display) {
                     var td = document.createElement('td');
-                    /*
-                     if(rrow['q']){
-                     td.innerHTML = row[rrow.q];
-                     }else{
-                     td.innerHTML = rrow.text;
-                     }*/
-                    // rrow['q']
-                    // rrow['text']
-                    // rrow.text.tpl = "asdf{n1}sdf"
-                    // rrow.text.kwargs = {'n1':'@id','n2':'@@123'}
+                    /* 在td标签中添加内容 */
                     var newKwargs = {}; // {'n1':'1','n2':'123'}
                     $.each(rrow.text.kwargs, function (kkk, vvv) {
                         var av = vvv;
@@ -133,6 +124,17 @@
                     });
                     var newText = rrow.text.tpl.format(newKwargs);
                     td.innerHTML = newText;
+
+                    /* 在td标签中添加属性 */
+                    $.each(rrow.attrs, function(atkey,atval){
+                       // 如果@
+                        if (atval[0] == '@'){
+                            td.setAttribute(atkey, row[atval.substring(1, atval.length)]);
+                        }else{
+                            td.setAttribute(atkey, atval);
+                        }
+                    });
+
                     $(tr).append(td);
                 }
             });
