@@ -23,6 +23,16 @@ def curd(request):
 def curd_json(request):
     table_config = [
         {
+            'q': None,  # 数据查询字段
+            'title': '选择',  # 显示标题
+            'display': True,  # 是否显示
+            'text': {
+                'tpl': "<input type='checkbox' value='{n1}' />",
+                'kwargs': {'n1': '@id'}
+            },
+            'attrs': {'nid': '@id'}
+        },
+        {
             'q':'id',
             'title':'ID',
             'display': False,
@@ -33,15 +43,15 @@ def curd_json(request):
             'attrs': {'k1': 'v1', 'k2': '@hostname'}
          },
         {
-            'q':'hostname',
-             'title':'主机名',
-             'display': True,
-             'text':{
-                 'tpl':"{n1}-{n2}",
-                 'kwargs':{'n1':'@hostname','n2':'@id'}
-             },
-            'attrs': {'k1': 'v1', 'k2': '@hostname'}
-         },
+            'q': 'hostname',
+            'title': '主机名',
+            'display': True,
+            'text': {
+                'tpl': "{n1}-{n2}",
+                'kwargs': {'n1': '@hostname', 'n2': '@id'}
+            },
+            'attrs': {'edit-enable': 'true', 'k2': '@hostname'}
+        },
         # 页面显示：标题：操作：删除，标记：a标签
         {
             'q': None,

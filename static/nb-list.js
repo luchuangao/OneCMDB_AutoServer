@@ -143,9 +143,43 @@
         })
     }
 
+    function trIntoEdit($tr){
+        console.log($tr);
+        $tr.find('td[edit-enable="true"]').each(function () {
+            // 获取原来td中的文本内容
+            var v1 = $(this).text();
+            // 创建input标签，并且内部设置值
+            var inp = document.createElement('input');
+            $(inp).val(v1);
+            // 添加到td中
+            $(this).html(inp);
+        })
+    }
+
+    function trOutEdit($tr){
+        $tr.find('td[edit-enable="true"]').each(function () {
+            // 获取原来td中的文本内容
+            var inputVal = $(this).find('input').val();
+            $(this).html(inputVal);
+        })
+    }
+
     jq.extend({
         xx: function (url) {
             initial(url);
+
+            $('#tbBody').on('click',':checkbox', function(){
+                // $(this) // checkbox标签
+                // 1. 检测是否已经被选中
+                var $tr = $(this).parent().parent();
+                if($(this).prop('checked')){
+                    // 进入编辑模式
+                    trIntoEdit($tr);
+                }else{
+                    // 退出编辑模式
+                    trOutEdit($tr);
+                }
+            })
         }
     })
 })(jQuery);

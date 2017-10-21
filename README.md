@@ -76,4 +76,7 @@ PS：隐患，容易被他人截获
     * Django内置： from django.core import serializers  
     * JSON + 扩展
 
+自定义增删改查组件：
+* 通过配置文件定义页面实现列以及数据：配置+js
+* 增删改：js  
 
