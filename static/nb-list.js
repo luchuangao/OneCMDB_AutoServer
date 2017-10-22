@@ -144,23 +144,50 @@
     }
 
     function trIntoEdit($tr){
-        console.log($tr);
         $tr.find('td[edit-enable="true"]').each(function () {
             // 获取原来td中的文本内容
-            var v1 = $(this).text();
-            // 创建input标签，并且内部设置值
-            var inp = document.createElement('input');
-            $(inp).val(v1);
-            // 添加到td中
-            $(this).html(inp);
+            var editType = $(this).attr('edit-type');
+            if(editType == 'select'){
+                // 生成下拉框:找到数据源
+                var deviceTypeChoices = GLOBAL_DICT[$(this).attr('global_key')];
+                // 生成select标签
+                var selectTag = document.createElement('select');
+                var origin = $(this).attr('origin');
+
+                $.each(deviceTypeChoices, function (k,v) {
+                    var option = document.createElement('option');
+                    $(option).text(v[1]);
+                    $(option).val(v[0]);
+                    if(v[0] == origin){
+                        // 默认选中原来的值
+                        $(option).prop('selected', true);
+                    }
+                    $(selectTag).append(option);
+                });
+                $(this).html(selectTag);
+                // 显示默认值
+            }else {
+                var v1 = $(this).text();
+                // 创建input标签，并且内部设置值
+                var inp = document.createElement('input');
+                $(inp).val(v1);
+                // 添加到td中
+                $(this).html(inp);
+            }
         })
     }
 
     function trOutEdit($tr){
         $tr.find('td[edit-enable="true"]').each(function () {
             // 获取原来td中的文本内容
-            var inputVal = $(this).find('input').val();
-            $(this).html(inputVal);
+            var editType = $(this).attr('edit-type');
+            if(editType == 'select'){
+                var option = $(this).find('select')[0].selectedOptions;
+                $(this).html($(option).text());
+            }else {
+                var inputVal = $(this).find('input').val();
+                $(this).html(inputVal);
+            }
         })
     }
 

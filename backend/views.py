@@ -90,6 +90,16 @@ def asset(request):
 def asset_json(request):
     table_config = [
         {
+            'q': None,  # 数据查询字段
+            'title': '选择',  # 显示标题
+            'display': True,  # 是否显示
+            'text': {
+                'tpl': "<input type='checkbox' value='{n1}' />",
+                'kwargs': {'n1': '@id'}
+            },
+            'attrs': {'nid': '@id'}
+        },
+        {
             'q': 'id',
             'title': 'ID',
             'display': False,
@@ -107,7 +117,7 @@ def asset_json(request):
                 'tpl': "{n1}",
                 'kwargs': {'n1': '@@device_type_choices'}
             },
-            'attrs': {'k1': 'v1', 'k2': '@id'}
+            'attrs': {'k1': 'v1', 'origin': '@device_type_id','edit-enable': 'true','edit-type':'select','global_key':'device_type_choices'}
         },
         {
             'q': 'device_status_id',
@@ -117,7 +127,7 @@ def asset_json(request):
                 'tpl': "{n1}",
                 'kwargs': {'n1': '@@device_status_choices'}
             },
-            'attrs': {'k1': 'v1', 'k2': '@id'}
+            'attrs': {'edit-enable': 'true','origin':'@device_status_id','edit-type':'select','global_key':'device_status_choices'}
         },
         {
             'q': 'cabinet_num',
@@ -127,7 +137,7 @@ def asset_json(request):
                 'tpl': "{n1}",
                 'kwargs': {'n1': '@cabinet_num'}
             },
-            'attrs': {'k1': 'v1', 'k2': '@id'}
+            'attrs': {'edit-enable': 'true','k1': 'v1', 'k2': '@id'}
         },
         {
             'q': 'idc__name',
@@ -137,7 +147,7 @@ def asset_json(request):
                 'tpl': "{n1}",
                 'kwargs': {'n1': '@idc__name'}
             },
-            'attrs': {'k1': 'v1', 'k2': '@id'}
+            'attrs': {'edit-enable': 'true','k1': 'v1', 'k2': '@id'}
         },
         # 页面显示：标题：操作；删除，编辑：a标签
         {
