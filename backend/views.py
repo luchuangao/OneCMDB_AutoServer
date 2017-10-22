@@ -140,6 +140,13 @@ def asset_json(request):
             'attrs': {'edit-enable': 'true','k1': 'v1', 'k2': '@id'}
         },
         {
+            'q': 'idc__id',
+            'title': '机房',
+            'display': False,
+            'text': {},
+            'attrs': {}
+        },
+        {
             'q': 'idc__name',
             'title': '机房',
             'display': True,
@@ -147,7 +154,7 @@ def asset_json(request):
                 'tpl': "{n1}",
                 'kwargs': {'n1': '@idc__name'}
             },
-            'attrs': {'edit-enable': 'true','k1': 'v1', 'k2': '@id'}
+            'attrs': {'k1':'v1','origin':'@idc_id','edit-enable': 'true','edit-type':'select','global_key':'idc_choices'}
         },
         # 页面显示：标题：操作；删除，编辑：a标签
         {
@@ -176,7 +183,8 @@ def asset_json(request):
         'table_config': table_config,
         'global_dict':{
             'device_type_choices': models.Asset.device_type_choices,
-            'device_status_choices': models.Asset.device_status_choices
+            'device_status_choices': models.Asset.device_status_choices,
+            'idc_choices': list(models.IDC.objects.values_list('id','name'))
         }
 
     }
